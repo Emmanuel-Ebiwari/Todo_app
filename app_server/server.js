@@ -9,7 +9,7 @@ app.use(cors());
 app.use(bodyParser.json())
 
 app.get('/tasks', (req, res) => {
-    const TASK_QUERY = `SELECT * FROM todo_database.tasks;`
+    const TASK_QUERY = `SELECT * FROM todo_database.tasks ORDER BY taskid;`
     connection.query(TASK_QUERY, (err, response) => {
         if(err) console.log(err)
         else res.send(response)

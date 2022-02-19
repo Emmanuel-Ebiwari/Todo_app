@@ -44,7 +44,7 @@ class TaskList extends React.Component{
     }
 
     onInputKeyPress = (e) => {
-        if(e.key == 'Enter'){
+        if(e.key === 'Enter'){
             this.onSubmitClick();
         }
     }
@@ -52,37 +52,6 @@ class TaskList extends React.Component{
     render () {
         return (
             <div>
-                {/* <h3>tasklist</h3>
-                <div className='ui input'>
-                    <input value={this.state.task} onChange={this.onInputChange} onKeyPress={this.onInputKeyPress} placeholder='your task'/>
-                </div>
-                <button className='ui primary button basic' onClick={() => {
-                    this.onSubmitClick()
-                }}>Submit</button>
-                <hr/>
-                <div className="ui cards">
-                    {this.state.taskList != "" 
-                    ?
-                    this.state.taskList.map(task => (
-                        <div className="card">
-                            <div className="content">
-                                <div className="meta">{task.task}</div>
-                            </div>
-                                <div className="extra content">
-                                    <div className="ui two buttons">
-                                        <div className="ui basic green button">Done</div>
-                                        <div className="ui basic red button" onClick={
-                                            () => this.onDeleteClick(task.taskid)}>Delete</div>
-                                    </div>
-                                </div>
-                        </div>
-                    ))
-                    :
-                    <div style={{"margin": "20% auto", "padding": "60px 10px", "font-size": "1.2rem"}} className="card">
-                        not connected to the server
-                    </div>
-                }
-                </div> */}
                 <section className="vh-100" style={{"background": "#fff"}}>
                   <div className="container py-2 h-100">
                     <div className="row d-flex justify-content-center my-1 h-100">
@@ -102,7 +71,7 @@ class TaskList extends React.Component{
                               <div className="col-12">
                                 <button className="btn btn-primary" onClick={() => {
                                     this.onSubmitClick()
-                                }}>Save</button>
+                                }}>Add Task</button>
                               </div>
                             </div>
                             
@@ -115,11 +84,12 @@ class TaskList extends React.Component{
                                 </tr>
                               </thead>
                               <tbody>
-                                {this.state.taskList != "" 
+                                <div className='p-2'></div>
+                                {this.state.taskList != ""
                                     ?
                                     this.state.taskList.map(task => (
                                         <tr>
-                                            <td>{task.task}</td>
+                                            <td className='text-right text-capitalize'>{task.task}</td>
                                             <td>In progress</td>
                                             <td>
                                               <button type="submit" className="btn btn-danger" onClick={
@@ -129,8 +99,8 @@ class TaskList extends React.Component{
                                         </tr>
                                     ))
                                     :
-                                    <div style={{"margin": "20% auto", "padding": "60px 10px", "font-size": "1.2rem"}} className="card">
-                                        not connected to the server
+                                    <div style={{ "font-size": "1.2rem", "margin-left": "50%"}} className="card py-5 px-1 my-5">
+                                        not connected to the server or list empty
                                     </div>
                                 }
                               </tbody>
