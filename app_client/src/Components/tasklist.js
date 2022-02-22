@@ -16,64 +16,55 @@ class TaskList extends React.Component{
         // this.getProgressList();
     }
 
+    // requests from the server all data from database and updates the taskList array with the data
     getTaskList = () => {
         axios.get('http://localhost:4000/tasks')
         .then(response =>  response.data)
         .then(response => this.setState({taskList: response}));
     }
+    // requests from the server all data from database and updates the taskList array with the data
 
-  //   getProgressList = (taskid) => {
-  //     axios.get(`http://localhost:4000/finishedTask/${taskid}`)
-  //     .then(response => console.log(response.data))
-  //     .then(response => this.setState({progList: response}));
-  // }
-      getProgressList = (taskid) => {
+    // gets the progress and taskid of each task from database and updates progress if conditions are met
+
+    getProgressList = (taskid) => {
       axios.get(`http://localhost:4000/finishedTask/${taskid}`)
       .then(response => response.data)
       .then(response => {
         response.forEach(res => {
-          if (taskid === res.taskid && res.isFinished === "In progress"){
-            // console.log(taskid, "1st", res.taskid, "2nd",  res.isFinished, "3rd");
-            axios.post(`http://localhost:4000/finishedTask/${taskid}`, {
-                isFinished: "completed"
-            })
-          }
-          else if(taskid === res.taskid &&  res.isFinished === "completed"){
-            // console.log(taskid, "1st", res.taskid, "2nd",  res.isFinished, "3rd");
-            axios.post(`http://localhost:4000/finishedTask/${taskid}`, {
-              isFinished: "In progress"
-            })
+          if (taskid === res.taskid){
+            if (res.isFinished === "In progress"){
+              // console.log(taskid, "1st", res.taskid, "2nd",  res.isFinished, "3rd");
+              axios.post(`http://localhost:4000/finishedTask/${taskid}`, {
+                  isFinished: "completed"
+              })
+            }
+            else{
+              // console.log(taskid, "1st", res.taskid, "2nd",  res.isFinished, "3rd");
+              axios.post(`http://localhost:4000/finishedTask/${taskid}`, {
+                isFinished: "In progress"
+              })
+            }
           }
         });
       });
     }
 
+    // gets the progress and taskid of each task from database and updates progress if conditions are met
+
+    // sends a delete request to the server
     onDeleteClick = (taskid) => {
         // console.log('inside delete');
         axios.delete(`http://localhost:4000/deleteTask/${taskid}`)
         this.getTaskList();
     }
+    // sends a delete request to the server
+
+    // a click event that calls the getProgressList function
     onFinishedClick = (taskid) => {
-      // if (this.state.isFinished == false){
-      //         this.setState({
-      //           isFinished: true
-      //         })
-      //         axios.post(`http://localhost:4000/finishedTask/${taskid}`, {
-      //           isFinished: this.state.isFinished
-      //       })
-      // }
-      // else{
-      //         this.setState({
-      //           isFinished: false
-      //         })
-      //         axios.post(`http://localhost:4000/finishedTask/${taskid}`, {
-      //           isFinished: this.state.isFinished
-      //       })
-      // }
       this.getTaskList(taskid);
-      // console.log(taskid);
       this.getProgressList(taskid);
-  }
+    }
+    // a click event that calls the getProgressList function
 
     onInputChange = (e) => {
         this.setState({
@@ -82,6 +73,7 @@ class TaskList extends React.Component{
         // console.log(e.target.value);
     }
 
+    // a click event that sends a post request to the server
     onSubmitClick = () => {
         axios.post('http://localhost:4000/addTask', {
             task: this.state.task
@@ -91,6 +83,7 @@ class TaskList extends React.Component{
             task: ""
         })
     }
+    // a click event that sends a post request to the server
 
     onInputKeyPress = (e) => {
         if(e.key === 'Enter'){
