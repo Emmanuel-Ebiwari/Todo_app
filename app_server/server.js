@@ -33,6 +33,24 @@ app.delete('/deleteTask/:taskid', (req, res) => {
     })
 })
 
+app.post('/finishedTask/:taskid', (req, res) => {
+    console.log(req.params.taskid);
+    console.log(req.body.isFinished);
+    const ALTER_QUERY = `UPDATE tasks SET isFinished="${req.body.isFinished !== "In progress" ? "completed" : "In progress"}" WHERE (taskid=${req.params.taskid});`
+    connection.query(ALTER_QUERY, (err, response) => {
+        if(err) console.log(err)
+        else res.send('your task has been updated')
+    })
+})
+
+app.get('/finishedTask/:taskid', (req, res) => {
+    const RETRIEVE_QUERY = `SELECT taskid, isFinished FROM todo_database.tasks ORDER BY taskid;`
+    connection.query(RETRIEVE_QUERY, (err, response) => {
+        if(err) console.log(err)
+        else res.send(response)
+    })
+})
+
 app.listen(4000, () => {
     console.log('running on port 4000');
 })

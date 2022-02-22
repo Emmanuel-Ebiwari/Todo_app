@@ -9,9 +9,11 @@ class TaskList extends React.Component{
 
     componentDidMount() {
         this.getTaskList();
+        // this.getProgressList();
     }
     componentDidUpdate() {
         this.getTaskList();
+        // this.getProgressList();
     }
 
     getTaskList = () => {
@@ -20,11 +22,58 @@ class TaskList extends React.Component{
         .then(response => this.setState({taskList: response}));
     }
 
+  //   getProgressList = (taskid) => {
+  //     axios.get(`http://localhost:4000/finishedTask/${taskid}`)
+  //     .then(response => console.log(response.data))
+  //     .then(response => this.setState({progList: response}));
+  // }
+      getProgressList = (taskid) => {
+      axios.get(`http://localhost:4000/finishedTask/${taskid}`)
+      .then(response => response.data)
+      .then(response => {
+        response.forEach(res => {
+          if (taskid === res.taskid && res.isFinished === "In progress"){
+            // console.log(taskid, "1st", res.taskid, "2nd",  res.isFinished, "3rd");
+            axios.post(`http://localhost:4000/finishedTask/${taskid}`, {
+                isFinished: "completed"
+            })
+          }
+          else if(taskid === res.taskid &&  res.isFinished === "completed"){
+            // console.log(taskid, "1st", res.taskid, "2nd",  res.isFinished, "3rd");
+            axios.post(`http://localhost:4000/finishedTask/${taskid}`, {
+              isFinished: "In progress"
+            })
+          }
+        });
+      });
+    }
+
     onDeleteClick = (taskid) => {
         // console.log('inside delete');
         axios.delete(`http://localhost:4000/deleteTask/${taskid}`)
         this.getTaskList();
     }
+    onFinishedClick = (taskid) => {
+      // if (this.state.isFinished == false){
+      //         this.setState({
+      //           isFinished: true
+      //         })
+      //         axios.post(`http://localhost:4000/finishedTask/${taskid}`, {
+      //           isFinished: this.state.isFinished
+      //       })
+      // }
+      // else{
+      //         this.setState({
+      //           isFinished: false
+      //         })
+      //         axios.post(`http://localhost:4000/finishedTask/${taskid}`, {
+      //           isFinished: this.state.isFinished
+      //       })
+      // }
+      this.getTaskList(taskid);
+      // console.log(taskid);
+      this.getProgressList(taskid);
+  }
 
     onInputChange = (e) => {
         this.setState({
@@ -89,12 +138,13 @@ class TaskList extends React.Component{
                                     ?
                                     this.state.taskList.map(task => (
                                         <tr>
-                                            <td className='text-right text-capitalize'>{task.task}</td>
-                                            <td>In progress</td>
+                                            <td className='text-left text-capitalize' style={task.isFinished === "completed" ? {textDecoration:"line-through"}: {textDecoration:"initial"}}>{task.task}</td>
+                                            <td>{task.isFinished}</td>
                                             <td>
                                               <button type="submit" className="btn btn-danger" onClick={
                                                       () => this.onDeleteClick(task.taskid)}>Delete</button>
-                                              <button type="submit" className="btn btn-success ms-1">Finished</button>
+                                              <button type="submit" className="btn btn-success ms-1" onClick={
+                                                      () => this.onFinishedClick(task.taskid)}>Finished</button>
                                             </td>
                                         </tr>
                                     ))
