@@ -5,6 +5,8 @@ const connection = require('./db');
 
 const app = express();
 
+const PORT = 4000;
+
 app.use(cors());
 app.use(bodyParser.json())
 
@@ -51,6 +53,6 @@ app.get('/finishedTask/:taskid', (req, res) => {
     })
 })
 
-app.listen(4000, () => {
-    console.log('running on port 4000');
+app.listen(PORT, () => {
+    console.log(`listening on port ${PORT}`)
 })

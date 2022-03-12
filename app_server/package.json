@@ -2,9 +2,8 @@
   "name": "app_server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "supervisor server.js"
   },
   "author": "Emmanuel Ebiwari",
@@ -15,5 +14,9 @@
     "express": "^4.17.2",
     "mysql2": "^2.3.3",
     "supervisor": "^0.12.0"
+  },
+  "engines": {
+    "node": ">= 16.13.2",
+    "npm": "8.4.1"
   }
 }
