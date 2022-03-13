@@ -18,7 +18,7 @@ class TaskList extends React.Component{
 
     // requests from the server all data from database and updates the taskList array with the data
     getTaskList = () => {
-        axios.get('http://localhost:4000/tasks')
+        axios.get('https://todo-app-backend-heroku.herokuapp.com/tasks')
         .then(response =>  response.data)
         .then(response => this.setState({taskList: response}));
     }
@@ -27,20 +27,20 @@ class TaskList extends React.Component{
     // gets the progress and taskid of each task from database and updates progress if conditions are met
 
     getProgressList = (taskid) => {
-      axios.get(`http://localhost:4000/finishedTask/${taskid}`)
+      axios.get(`https://todo-app-backend-heroku.herokuapp.com/finishedTask/${taskid}`)
       .then(response => response.data)
       .then(response => {
         response.forEach(res => {
           if (taskid === res.taskid){
             if (res.isFinished === "In progress"){
               // console.log(taskid, "1st", res.taskid, "2nd",  res.isFinished, "3rd");
-              axios.post(`http://localhost:4000/finishedTask/${taskid}`, {
+              axios.post(`https://todo-app-backend-heroku.herokuapp.com/finishedTask/${taskid}`, {
                   isFinished: "completed"
               })
             }
             else{
               // console.log(taskid, "1st", res.taskid, "2nd",  res.isFinished, "3rd");
-              axios.post(`http://localhost:4000/finishedTask/${taskid}`, {
+              axios.post(`https://todo-app-backend-heroku.herokuapp.com/finishedTask/${taskid}`, {
                 isFinished: "In progress"
               })
             }
@@ -54,7 +54,7 @@ class TaskList extends React.Component{
     // sends a delete request to the server
     onDeleteClick = (taskid) => {
         // console.log('inside delete');
-        axios.delete(`http://localhost:4000/deleteTask/${taskid}`)
+        axios.delete(`https://todo-app-backend-heroku.herokuapp.com/deleteTask/${taskid}`)
         this.getTaskList();
     }
     // sends a delete request to the server
@@ -75,7 +75,7 @@ class TaskList extends React.Component{
 
     // a click event that sends a post request to the server
     onSubmitClick = () => {
-        axios.post('http://localhost:4000/addTask', {
+        axios.post('https://todo-app-backend-heroku.herokuapp.com/addTask', {
             task: this.state.task
         })
         this.getTaskList()

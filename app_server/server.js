@@ -5,13 +5,17 @@ const connection = require('./db');
 
 const app = express();
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(bodyParser.json())
 
+app.get('/', (req, res) => {
+    res.send(response)
+})
+
 app.get('/tasks', (req, res) => {
-    const TASK_QUERY = `SELECT * FROM todo_database.tasks ORDER BY taskid;`
+    const TASK_QUERY = `SELECT * FROM bwrardikjymafrzdcbty.tasks ORDER BY taskid;`
     connection.query(TASK_QUERY, (err, response) => {
         if(err) console.log(err)
         else res.send(response)
@@ -19,7 +23,7 @@ app.get('/tasks', (req, res) => {
 })
 
 app.post('/addTask', (req, res) => {
-    const ADD_QUERY = `INSERT INTO todo_database.tasks (task) VALUES ('${req.body.task}');`
+    const ADD_QUERY = `INSERT INTO bwrardikjymafrzdcbty.tasks (task) VALUES ('${req.body.task}');`
     connection.query(ADD_QUERY, err => {
         if(err) console.log(err)
         else res.send('task has been successfully added')
@@ -28,7 +32,7 @@ app.post('/addTask', (req, res) => {
 
 app.delete('/deleteTask/:taskid', (req, res) => {
     console.log(req.params.taskid);
-    const DELETE_QUERY = `DELETE FROM todo_database.tasks WHERE (taskid=${req.params.taskid});`
+    const DELETE_QUERY = `DELETE FROM bwrardikjymafrzdcbty.tasks WHERE (taskid=${req.params.taskid});`
     connection.query(DELETE_QUERY, (err, response) => {
         if(err) console.log(err)
         else res.send('you can delete tasks')
@@ -46,7 +50,7 @@ app.post('/finishedTask/:taskid', (req, res) => {
 })
 
 app.get('/finishedTask/:taskid', (req, res) => {
-    const RETRIEVE_QUERY = `SELECT taskid, isFinished FROM todo_database.tasks ORDER BY taskid;`
+    const RETRIEVE_QUERY = `SELECT taskid, isFinished FROM bwrardikjymafrzdcbty.tasks ORDER BY taskid;`
     connection.query(RETRIEVE_QUERY, (err, response) => {
         if(err) console.log(err)
         else res.send(response)
